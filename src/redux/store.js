@@ -5,7 +5,7 @@ import logger from './middleware/logger';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk, logger)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk, logger),
 });
 
 export default store;

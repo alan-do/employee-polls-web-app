@@ -1,37 +1,41 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Navigation = () => {
   const authedUser = useSelector((state) => state.authedUser);
   const users = useSelector((state) => state.users);
 
+  // Kiểm tra nếu authedUser hoặc users là undefined
+  if (!authedUser || !users) {
+    return null;
+  }
+
+  const user = users[authedUser];
+
+  // Kiểm tra nếu user là undefined
+  if (!user) {
+    return null;
+  }
+
   return (
-    <nav>
+    <nav className="nav">
       <ul>
         <li>
-          <NavLink to="/home" exact activeClassName="active">
-            Home
-          </NavLink>
+          <Link to="/home">Home</Link>
         </li>
         <li>
-          <NavLink to="/add" activeClassName="active">
-            New Poll
-          </NavLink>
+          <Link to="/add">New Question</Link>
         </li>
         <li>
-          <NavLink to="/leaderboard" activeClassName="active">
-            Leaderboard
-          </NavLink>
+          <Link to="/leaderboard">Leaderboard</Link>
         </li>
-        {authedUser && (
-          <li>
-            <span>Hello, {users[authedUser].name}</span>
-            <NavLink to="/logout" activeClassName="active">
-              Logout
-            </NavLink>
-          </li>
-        )}
+        <li>
+          Hello, {user.name}
+        </li>
+        <li>
+          <Link to="/logout">Logout</Link>
+        </li>
       </ul>
     </nav>
   );

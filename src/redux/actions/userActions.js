@@ -1,13 +1,6 @@
-export const SET_AUTHED_USER = 'SET_AUTHED_USER';
-export const RECEIVE_USERS = 'RECEIVE_USERS';
-export const LOGOUT_USER = 'LOGOUT_USER';
+import { getInitialData } from '../../utils/api';
 
-export function setAuthedUser(id) {
-  return {
-    type: SET_AUTHED_USER,
-    id,
-  };
-}
+export const RECEIVE_USERS = 'RECEIVE_USERS';
 
 export function receiveUsers(users) {
   return {
@@ -16,8 +9,9 @@ export function receiveUsers(users) {
   };
 }
 
-export function logoutUser() {
-  return {
-    type: LOGOUT_USER,
+export function handleInitialData() {
+  return async (dispatch) => {
+    const data = await getInitialData();
+    dispatch(receiveUsers(data.users));
   };
 }
