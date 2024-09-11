@@ -1,9 +1,7 @@
-import { getInitialData } from '../../utils/api';
-import { receiveUsers } from './userActions';
-import { receiveQuestions } from './pollActions';
-import { setAuthedUser } from './authActions';
+import { _getUsers } from '../../utils/_DATA';
+import { handleGetUsers } from './userActions';
+import { login } from './authActions';
 
-const AUTHED_ID = 'sarahedo';
 
 export const SET_LOADING = 'SET_LOADING';
 
@@ -14,13 +12,12 @@ export function setLoading(loading) {
   };
 }
 
-export function handleInitialData() {
+export function handleInitialData(users) {
   return (dispatch) => {
     dispatch(setLoading(true));
-    return getInitialData().then(({ users, questions }) => {
-      dispatch(receiveUsers(users));
-      dispatch(receiveQuestions(questions));
-      dispatch(setAuthedUser(AUTHED_ID));
+    return _getUsers().then((users) => {
+      dispatch(handleGetUsers(users));
+      dispatch(login(users));
       dispatch(setLoading(false));
     });
   };

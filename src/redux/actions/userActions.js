@@ -1,17 +1,18 @@
-import { getInitialData } from '../../utils/api';
+import { _getUsers } from '../../utils/_DATA';
 
-export const RECEIVE_USERS = 'RECEIVE_USERS';
+export const GET_USERS = 'GET_USERS';
+export const GET_USER_ANSWER = 'GET_USER_ANSWER';
 
-export function receiveUsers(users) {
+export function getUsers(users) {
   return {
-    type: RECEIVE_USERS,
+    type: GET_USERS,
     users,
   };
 }
 
-export function handleInitialData() {
+export function handleGetUsers() {
   return async (dispatch) => {
-    const data = await getInitialData();
-    dispatch(receiveUsers(data.users));
+    const data = await _getUsers();
+    dispatch(getUsers(data));
   };
 }

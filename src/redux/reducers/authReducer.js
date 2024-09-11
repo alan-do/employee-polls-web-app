@@ -1,4 +1,4 @@
-import { SET_AUTHED_USER, LOGOUT_USER } from '../actions/authActions';
+import { LOGIN, LOGOUT } from '../actions/authActions';
 
 
 const initialState = {
@@ -7,16 +7,14 @@ const initialState = {
 };
 
 export default function auth(state = initialState, action) {
-  console.log('action', action);
-
   switch (action.type) {
-    case SET_AUTHED_USER:
+    case LOGIN:
       return {
         ...state,
         isAuthenticated: true,
         userId: action.payload,
       };
-    case LOGOUT_USER:
+    case LOGOUT:
       return initialState;
     default:
       return state;

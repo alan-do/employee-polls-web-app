@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleInitialData } from '../../redux/actions/userActions';
-import { setAuthedUser } from '../../redux/actions/authActions';
+import { useNavigate } from 'react-router-dom';
+import { handleLogin } from '../../redux/actions/authActions';
+import { handleGetUsers } from '../../redux/actions/userActions';
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const usersList = useSelector((state) => state.users);
   const [selectedUser, setSelectedUser] = useState('');
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    dispatch(handleInitialData());
+    dispatch(handleGetUsers());
   }, [dispatch]);
 
-  const handleLogin = () => {
-    if (selectedUser) {
-      dispatch(setAuthedUser(selectedUser));
+  useEffect(() => {
+    if (isAuthenticated) {
       navigate('/home');
     }
-  };
+  }, [isAuthenticated, navigate]);
+
+  const login = () => {
+    dispatch(handleLogin(selectedUser));
+  }
 
   return (
     <div>
@@ -33,10 +38,10 @@ function Login() {
             </option>
           ))
         ) : (
-          <option>Đang tải...</option>
+          <option>Loading...</option>
         )}
       </select>
-      <button onClick={handleLogin} disabled={!selectedUser}>Login</button>
+      <button onClick={login} disabled={!selectedUser}>Login</button>
     </div>
   );
 }

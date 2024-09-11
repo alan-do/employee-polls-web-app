@@ -1,16 +1,29 @@
-export const SET_AUTHED_USER = 'SET_AUTHED_USER';
-export const LOGOUT_USER = 'LOGOUT_USER';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 
-export function setAuthedUser(id) {
-  console.log('id', id);
+export function login(id) {
   return {
-    type: SET_AUTHED_USER,
+    type: LOGIN,
     payload: id,
   };
 }
 
-export function logoutUser() {
+export function logout() {
   return {
-    type: LOGOUT_USER,
+    type: LOGOUT,
+  };
+}
+
+export function handleLogin(selectedUser) {
+  return (dispatch) => {
+    if (selectedUser) {
+      dispatch(login(selectedUser));
+    }
+  };
+}
+
+export function handleLogout() {
+  return (dispatch) => {
+    dispatch(logout());
   };
 }
