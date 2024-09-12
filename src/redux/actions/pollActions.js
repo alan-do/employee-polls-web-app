@@ -21,7 +21,6 @@ export function handleGetPolls(answers = []) {
     const data = await _getQuestions();
     const newQuestions = Object.values(data).filter(question => !Object.keys(answers).includes(question.id));
     const doneQuestions = Object.values(data).filter(question => Object.keys(answers).includes(question.id));
-    console.log(data);
     dispatch(_getPolls({newQuestions, doneQuestions}));
   };
 }

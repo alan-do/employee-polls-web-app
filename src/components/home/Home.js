@@ -10,6 +10,8 @@ function Home() {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.userId);
   const users = useSelector((state) => state.users);
+  const newQuestions = useSelector((state) => state.questions.newQuestions);
+  const doneQuestions = useSelector((state) => state.questions.doneQuestions);
   const user = users[userId];
   const [tab, setTab] = useState('home');
 
@@ -28,8 +30,8 @@ function Home() {
         <button onClick={() => setTab('leaderboard')}>Leaderboard</button>
         <button onClick={() => setTab('new')}>New</button>
       </div>
-      <h1>Welcome, {user ? user.name : 'Guest'}!</h1>
-      {tab === 'home' && <DashBoard newQuestion={user.answers} />}
+      <h1 className="text-2xl font-bold">Welcome, {user ? user.name : 'Guest'}!</h1>
+      {tab === 'home' && <DashBoard newQuestions={newQuestions} doneQuestions={doneQuestions} />}
       {tab === 'leaderboard' && <LeaderBoard />}
       {tab === 'new' && <PollCreation />}
       <button onClick={logout}>Logout</button>
