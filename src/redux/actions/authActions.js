@@ -17,6 +17,8 @@ export function logout() {
 export function handleLogin(selectedUser) {
   return (dispatch) => {
     if (selectedUser) {
+      localStorage.setItem('user', JSON.stringify(selectedUser));
+      console.log(selectedUser);
       dispatch(login(selectedUser));
     }
   };

@@ -5,37 +5,71 @@ import { handleGetPolls } from '../../redux/actions/pollActions';
 import DashBoard from './DashBoard';
 import LeaderBoard from './LeaderBoard';
 import PollCreation from './PollCreation';
+import { Layout, Menu, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userId = useSelector((state) => state.auth.userId);
   const users = useSelector((state) => state.users);
   const newQuestions = useSelector((state) => state.questions.newQuestions);
   const doneQuestions = useSelector((state) => state.questions.doneQuestions);
   const user = users[userId];
-  const [tab, setTab] = useState('home');
+  const [tab, setTab] = useState('Home');
+  const { Header, Content } = Layout;
+
+  const navItems = ['Home', 'Leaderboard', 'New'].map((key) => ({
+    key,
+    label: `${key}`,
+  }));
 
   useEffect(() => {
-    dispatch(handleGetPolls(user.answers || []));
-  }, [dispatch, user.answers]);
+    const storedUser = localStorage.getItem('user');
+    console.log('storedUser', storedUser);
+    if (storedUser) {
+      dispatch(handleGetPolls(storedUser.answers || []));
+    }
+  }, [dispatch]);
   
   const logout = () => {
+    localStorage.removeItem("user"); 
     dispatch(handleLogout());
+    navigate('/login');
   };
 
   return (
-    <div>
-      <div className="nav">
-        <button onClick={() => setTab('home')}>Home</button>
-        <button onClick={() => setTab('leaderboard')}>Leaderboard</button>
-        <button onClick={() => setTab('new')}>New</button>
-      </div>
-      <h1 className="text-2xl font-bold">Welcome, {user ? user.name : 'Guest'}!</h1>
-      {tab === 'home' && <DashBoard newQuestions={newQuestions} doneQuestions={doneQuestions} />}
-      {tab === 'leaderboard' && <LeaderBoard />}
-      {tab === 'new' && <PollCreation />}
-      <button onClick={logout}>Logout</button>
-    </div>
+    <Layout>
+      <Header style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="demo-logo" />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['Home']}
+          items={navItems}
+          style={{ flex: 1, minWidth: 0 }}
+          onClick={(e) => setTab(e.key)}
+        />
+        <Button onClick={logout}>Logout</Button>
+      </Header>
+      <Layout>
+        <Layout style={{ padding: '0 24px 24px' }}>
+          <Content
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+              background: '',
+              borderRadius: '10px',
+            }}
+          >
+            {tab === 'Home' && <DashBoard newQuestions={newQuestions} doneQuestions={doneQuestions} />}
+            {tab === 'Leaderboard' && <LeaderBoard />}
+            {tab === 'New' && <PollCreation />}
+          </Content>
+        </Layout>
+      </Layout>
+    </Layout>
   );
 }
 

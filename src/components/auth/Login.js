@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { handleLogin } from "../../redux/actions/authActions";
 import { handleGetUsers } from "../../redux/actions/userActions";
-import { DownOutlined, UserOutlined } from "@ant-design/icons";
-import { Dropdown, Space, Button, Flex, Layout, Image } from "antd";
-const { Header, Footer, Sider, Content } = Layout;
+import { UserOutlined } from "@ant-design/icons";
+import { Dropdown, Button, Flex, Layout, Image } from "antd";
+const { Header, Footer, Content } = Layout;
 
 function Login() {
   const dispatch = useDispatch();
@@ -14,8 +14,6 @@ function Login() {
   const usersList = useSelector((state) => state.users);
   const [selectedUser, setSelectedUser] = useState("");
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const auth = useSelector((state) => state.auth);
-  console.log(auth);
   useEffect(() => {
     dispatch(handleGetUsers());
   }, [dispatch]);
@@ -27,7 +25,9 @@ function Login() {
   }, [isAuthenticated, navigate]);
 
   const login = () => {
-    dispatch(handleLogin(selectedUser));
+    const user = usersList[selectedUser];
+    console.log(user);
+    dispatch(handleLogin(user));
   };
 
   const items =
@@ -69,8 +69,7 @@ function Login() {
             style={{
               height: "100%",
             }}
-            items={[
-            ]}
+            items={[]}
           ></Image.PreviewGroup>
           <Dropdown.Button
             style={{
@@ -95,22 +94,6 @@ function Login() {
         <Footer style={{ background: "#fff", padding: 0 }}>Footer</Footer>
       </Layout>
     </Flex>
-    // <Flex gap='middle' wrap='wrap'>
-    //   <Dropdown.Button
-    //     menu={{
-    //       items,
-    //       onClick: handleMenuClick,
-    //     }}
-    //     placement="bottom"
-    //     icon={<UserOutlined />}
-    //   >
-    //     {selectedUser ? usersList[selectedUser].name : "Select User"}
-    //   </Dropdown.Button>
-
-    //   <Button type="primary" onClick={login} disabled={!selectedUser}>
-    //     Đăng nhập
-    //   </Button>
-    // </Flex>
   );
 }
 

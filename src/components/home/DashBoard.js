@@ -1,18 +1,22 @@
 import Question from '../common/Question';
 
+const onShowQuestion = (question) => {
+  console.log('question', question);
+}
+
 const DashBoard = ({newQuestions = [], doneQuestions = []}) => {
-  console.log('newQuestionsDashBoard', newQuestions);
-  console.log('doneQuestionsDashBoard', doneQuestions);
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 ">New Question</h1>
-      <div>
+      <h1 className="text-2xl font-bold mb-4">New Question</h1>
+      <div className="border">
           {newQuestions.length > 0 ? (
             newQuestions.map((question) => (
-              <Question key={question.id} question={question} />
+              <div key={question.id} className="flex-shrink-0 mr-4">
+                <Question question={question} onShowQuestion={onShowQuestion}/>
+              </div>
             ))
           ) : (
-            <p className="text-gray-500">No new questions available.</p>
+            <p className="text-gray-500">Không có câu hỏi mới.</p>
           )}
         </div>
       <h1>Done Question</h1>
