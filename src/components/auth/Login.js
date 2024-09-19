@@ -26,7 +26,6 @@ function Login() {
 
   const login = () => {
     const user = usersList[selectedUser];
-    console.log(user);
     dispatch(handleLogin(user));
   };
 

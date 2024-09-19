@@ -3,7 +3,7 @@ import { LOGIN, LOGOUT } from '../actions/authActions';
 
 const initialState = {
   isAuthenticated: false,
-  userId: null,
+  user: null,
 };
 
 export default function auth(state = initialState, action) {
@@ -12,7 +12,7 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        userId: action.payload,
+        user: action.payload,
       };
     case LOGOUT:
       return initialState;

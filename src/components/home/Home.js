@@ -2,20 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleLogout } from '../../redux/actions/authActions';
 import { handleGetPolls } from '../../redux/actions/pollActions';
-import DashBoard from './DashBoard';
-import LeaderBoard from './LeaderBoard';
-import PollCreation from './PollCreation';
+import DashBoard from './DashBoard/DashBoard';
+import LeaderBoard from './LeaderBoard/LeaderBoard';
+import PollCreation from './PoolCreation/PollCreation';
 import { Layout, Menu, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
+import './Home.css';
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = useSelector((state) => state.auth.userId);
-  const users = useSelector((state) => state.users);
-  const newQuestions = useSelector((state) => state.questions.newQuestions);
-  const doneQuestions = useSelector((state) => state.questions.doneQuestions);
-  const user = users[userId];
+  const user = useSelector((state) => state.auth.user);
+  const questions = useSelector((state) => state.questions);
+  const newQuestions = questions.newQuestions;
+  const doneQuestions = questions.doneQuestions;
   const [tab, setTab] = useState('Home');
   const { Header, Content } = Layout;
 
@@ -26,9 +25,9 @@ function Home() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    console.log('storedUser', storedUser);
     if (storedUser) {
-      dispatch(handleGetPolls(storedUser.answers || []));
+      const parsedUser = JSON.parse(storedUser);
+      dispatch(handleGetPolls(parsedUser.answers || []));
     }
   }, [dispatch]);
   
@@ -50,7 +49,11 @@ function Home() {
           style={{ flex: 1, minWidth: 0 }}
           onClick={(e) => setTab(e.key)}
         />
-        <Button onClick={logout}>Logout</Button>
+        <div className='user-info'>
+          <img className='avatar' src={user.avatarURL} alt="avatar" />
+          <p className='user-name'>{user.name}</p>
+          <Button className='logout-button' onClick={logout}>Logout</Button>
+        </div>
       </Header>
       <Layout>
         <Layout style={{ padding: '0 24px 24px' }}>
